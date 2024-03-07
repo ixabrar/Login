@@ -16,7 +16,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  Conn:{
+  Conn1:{
+    type:String
+  },
+  Conn2:{
+    type:String
+  },
+  Conn3:{
+    type:String
+  },
+  Conn4:{
     type:String
   }
 });

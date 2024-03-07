@@ -59,12 +59,18 @@ app.post('/signup', async (req, res) => {
         const newUser = new userModel({
             username: req.body.username,
             email: req.body.email,
-            password: req.body.password, // Ensure password hashing is handled
+            password: req.body.password,
+            Conn1:req.body.CON1,
+            Conn2:req.body.CON2,
+            Conn3:req.body.CON3,
+            Conn4:req.body.CON4,
+             // Ensure password hashing is handled
         });
 
         const savedUser = await newUser.save();
+        console.log(savedUser);
         req.session.user = savedUser;
-        res.redirect('/dashboard');
+        res.redirect('/login');
     } catch (err) {
         console.error(err);
         res.redirect('/signup');
@@ -79,7 +85,7 @@ app.get('/dashboard', async (req, res) => {
     }
 });
 
-mongoose.connect('mongodb://127.0.0.1:27017/UserDB')
+mongoose.connect('mongodb+srv://Gcreatix:AR%237587@users.dxsrar7.mongodb.net/USERS')
   .then(() => {
     console.log('Connected to MongoDB');
 
@@ -102,14 +108,20 @@ mongoose.connect('mongodb://127.0.0.1:27017/UserDB')
               return res.redirect("/login");
             }
             console.log('User Session:', req.session.user);
-            const con = user.Conn;
-
+            const con1 = user.Conn1;
+            const con2 = user.Conn2;
+            const con3 = user.Conn3;
+            const con4 = user.Conn4;
+            console.log("retrived Connection string 1:",con1);
+            console.log("retrived Connection string 2:",con2);
+            console.log("retrived Connection string 3:",con3);
+            console.log("retrived Connection string 4:",con4);
             mongoose.connection.close();
             console.log("connection closed");
 
-            mongoose.connect(con, {})
+            mongoose.connect(con1, {})
               .then(() => {
-                console.log('Connected to user-specific MongoDB', con);
+                console.log('Connected to user-specific MongoDB', con1);
                 req.session.user = user;
                 return res.redirect("/dashboard");
               })
@@ -134,7 +146,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/UserDB')
             console.log("User-specific connection closed");
 
             // Connect to the default or new MongoDB here
-            const defaultConnectionString = 'mongodb://127.0.0.1:27017/UserDB';
+            const defaultConnectionString = 'mongodb+srv://Gcreatix:AR%237587@users.dxsrar7.mongodb.net/USERS';
             mongoose.connect(defaultConnectionString, {})
             .then(() => {
                 console.log('Connected to default MongoDB');
